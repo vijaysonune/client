@@ -1,3 +1,6 @@
+import { ServerErrorComponent } from './server-error/server-error.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { TestErrorsComponent } from './test-errors/test-errors.component';
 import { MemberDetailComponent } from './member-detail/member-detail.component';
 import { MemberListComponent } from './member-list/member-list.component';
 import { NgModule } from '@angular/core';
@@ -20,6 +23,9 @@ const routes: Routes = [
       {path : 'messages' , component :MessagesComponent},
     ]
   }, 
+  {path : 'errors', component : TestErrorsComponent},  
+  {path : 'not-found', component : NotFoundComponent},
+  {path : 'server-error', component : ServerErrorComponent},
   {path : '**' , component :HomeComponent , pathMatch : 'full'},
   
 ];
