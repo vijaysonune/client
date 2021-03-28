@@ -1,6 +1,6 @@
+import { Member } from './../_models/member';
 import { MembersService } from './../_services/members.service';
 import { Component, OnInit } from '@angular/core';
-import { Member } from '../_models/member';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 
@@ -11,7 +11,7 @@ import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov
 })
 export class MemberDetailComponent implements OnInit {
 
-  member : any;
+  member ={} as Member;
   galleryOptions: NgxGalleryOptions[]=[];
   galleryImages: NgxGalleryImage[]=[];
 
