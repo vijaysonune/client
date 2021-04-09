@@ -18,7 +18,7 @@ export class AccountService {
 
    }
 
-   login(model: any)
+   login(model: User)
    {
     return this.http.post<User>(this.baseUrl + "account/login", model).pipe(
       map((response : User) => {
@@ -30,13 +30,13 @@ export class AccountService {
       ) 
    }
 
-   register(model:any)
+   register(model: User)
    {
     return this.http.post<User>(this.baseUrl + "account/register", model).pipe(
       map((response : User) => {
         const user= response;
         if(user){
-        this.setCurrentUser(user);
+        this.setCurrentUser(user);        
         } return user;
        })
       ) 
