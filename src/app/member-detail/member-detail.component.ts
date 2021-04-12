@@ -1,8 +1,12 @@
+import { MessageService } from './../_services/message.service';
 import { Member } from './../_models/member';
 import { MembersService } from './../_services/members.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
+import { Message } from '../_models/message';
+import { AnySoaRecord } from 'node:dns';
 
 @Component({
   selector: 'app-member-detail',
@@ -10,15 +14,28 @@ import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov
   styleUrls: ['./member-detail.component.css']
 })
 export class MemberDetailComponent implements OnInit {
+  @ViewChild('memberTabsets',{static : true} ) memberTabsets : TabsetComponent;
 
   member ={} as Member;
   galleryOptions: NgxGalleryOptions[]=[];
   galleryImages: NgxGalleryImage[]=[];
+  activeTab :TabDirective;
+  messages : Message[]=[];
 
-  constructor(private memberService :  MembersService, private route : ActivatedRoute) { }
+  constructor(private memberService :  MembersService, private route : ActivatedRoute 
+    , private messageService : MessageService) { }
 
   ngOnInit(): void {
-    this.loadMember();
+    
+    this.route.data.subscribe(data => {
+      console.log("route.data : "+ JSON.stringify(data));
+      this.member = data.member;
+    })
+
+    this.route.queryParams.subscribe( params => {
+      console.log("params : "+params.tabs);
+      params.tabs ? this.selectTab(params.tabs) : this.selectTab(0);
+    })
 
     this.galleryOptions = [
       {
@@ -31,8 +48,7 @@ export class MemberDetailComponent implements OnInit {
 
       }
     ]
-
-    
+    this.galleryImages= this.getImages();  
 
   }
 
@@ -48,20 +64,28 @@ export class MemberDetailComponent implements OnInit {
      })
    }
    return imgUrls;
-
-
  }
+ 
+  onTabActivates(data : TabDirective)
+  {
+    this.activeTab=data;
+    if(this.activeTab.heading ==='Messages' && this.messages.length === 0)
+    {
+      this.loadMessages();
+    }
+  }
 
+  selectTab(tabId : number)
+  {
+    this.memberTabsets.tabs[tabId].active=true;
+  }
 
+  loadMessages()
+  {
+    this.messageService.getMessageThread(this.member.username).subscribe(response => {
+      this.messages=response;
 
-  loadMember()
-  {   
-   this.memberService.getMember(this.route.snapshot.paramMap.get('username')).subscribe( member =>{
-      this.member= member;
-      this.galleryImages= this.getImages();
-      
     })
-
   }
 
 }
