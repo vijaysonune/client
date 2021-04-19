@@ -1,3 +1,4 @@
+import { PresenceService } from './presence.service';
 import { User } from './../_models/user';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -14,7 +15,7 @@ export class AccountService {
  currentUser$ = this.CurrentSourseUser.asObservable();
   
 
-  constructor(private http : HttpClient) {
+  constructor(private http : HttpClient, private presence : PresenceService) {
 
    }
 
@@ -25,6 +26,7 @@ export class AccountService {
         const user= response;
         if(user){
           this.setCurrentUser(user);
+          this.presence.createHubConnection(user);
         }
        })
       ) 
@@ -36,7 +38,8 @@ export class AccountService {
       map((response : User) => {
         const user= response;
         if(user){
-        this.setCurrentUser(user);        
+        this.setCurrentUser(user);   
+        this.presence.createHubConnection(user);     
         } return user;
        })
       ) 
@@ -53,7 +56,8 @@ export class AccountService {
 
    logout(){
      localStorage.removeItem("user");
-     this.CurrentSourseUser.next();
+     this.CurrentSourseUser.next(null);
+     this.presence.stopHubConnection();
    }
 
    getDecodeToken(token){

@@ -1,3 +1,4 @@
+import { PresenceService } from './_services/presence.service';
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './_services/account.service';
 
@@ -13,7 +14,7 @@ export class AppComponent implements OnInit {
   users : any;
  
 
-  constructor(private accountservice : AccountService)
+  constructor(private accountservice : AccountService, private presence : PresenceService)
   {
     
 
@@ -27,7 +28,13 @@ export class AppComponent implements OnInit {
 
   setCurrentUser(){
     const user  : any = localStorage.getItem("user");
-    this.accountservice.setCurrentUser(JSON.parse(user));
+
+    if(user)
+    {
+      this.accountservice.setCurrentUser(user);
+      this.presence.createHubConnection(user);
+    }
+    
  }
 
  
