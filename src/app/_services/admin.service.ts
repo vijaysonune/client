@@ -1,3 +1,4 @@
+import { Photo } from './../_models/photo';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
@@ -20,5 +21,20 @@ export class AdminService {
   {
     console.log( "updateUserRoles"+ JSON.stringify(roles));
     return this.http.post(this.baseUrl + 'admin/edit-roles/'+ username +'?roles='+ roles ,{})
+  }
+
+  getPhotosForApproval()
+  {
+    return this.http.get<Partial<Photo[]>>(this.baseUrl + "admin/GetPhotoForApproval");
+  }
+
+  approvePhoto(photo : Photo)
+  {
+    return this.http.put(this.baseUrl + "admin/ApprovePhoto",photo);
+  }
+
+  rejectPhoto(id : number)
+  {
+    return this.http.delete(this.baseUrl + "admin/reject-photo-byAdmin/"+id);
   }
 }

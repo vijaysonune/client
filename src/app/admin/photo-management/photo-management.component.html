@@ -1,1 +1,18 @@
-<p>photo-management works!</p>
+<div class="row" *ngIf="photos?.length === 0">
+    <h4>No Photos for approval </h4>
+</div>
+
+<div class="row mt-3" *ngIf="photos?.length > 0">
+    <div class="col-2" *ngFor="let photo of photos">
+        <div> <h5>{{photo.username}}</h5></div>
+        <img src="{{photo.url || './assets/user.png'}}" alt="{{photo.username}}" class="card-img-top"/>
+        <div class="card-body p-1">
+            <h6 class="card-title text-center mb-1">
+                <button (click)="approvePhoto(photo)" class="btn btn-success">Approve</button>
+                <button (click)="rejectPhoto(photo.id)" class="btn btn-danger">Reject</button>
+             </h6>
+        </div>
+    </div>
+</div>
+
+

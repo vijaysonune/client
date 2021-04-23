@@ -1,8 +1,17 @@
 <div class="row">
     <div class="col-2" *ngFor="let photo of member.photos">
+        <div class="container" *ngIf="!photo.isApproved">
+            <div class="blurr">
+            <img  src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1"/></div>
+            <div class="centered " *ngIf="!photo.isApproved">Awaiting for Approval </div>  
+            <button (click)="deletePhoto(photo.id)"
+             class="btn btn-sm btn-danger"> <i class="fa fa-trash"></i></button>
+                    
+        </div>
+        <div *ngIf="photo.isApproved">
         <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1"/>
-        <div class="text center">
-            <button [disabled]="photo.isMain"
+               <div class="text center" *ngIf="photo.isApproved">
+            <button [disabled]="photo.isMain && !photo.isApproved"
             (click)="SetMainPhoto(photo)"
             [ngClass]='photo.isMain ? "btn btn-success active" : "btn-outline-success"'
             class="btn btn-sm"> 
@@ -10,6 +19,7 @@
             <button [disabled]="photo.isMain"
             (click)="deletePhoto(photo.id)"
              class="btn btn-sm btn-danger"> <i class="fa fa-trash"></i></button>
+            </div>
         </div>
 
     </div>
