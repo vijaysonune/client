@@ -11,9 +11,8 @@ export class HomeComponent implements OnInit {
   registerMode =false;
   users : any = {};
 
-  constructor(private http : HttpClient) {
-    this.http.get("http://localhost:49716/api/Users").subscribe(response => {
-       this.users= response;});
+  constructor() {
+ 
     }
    
  

@@ -1,7 +1,8 @@
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { InterceptorerrorInterceptor } from './_interceptors/interceptorerror.interceptor';
 import { SharedModule } from './shared/shared.module';
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,6 +33,7 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesMadalComponent } from './modals/roles-madal/roles-madal.component';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -68,11 +70,15 @@ import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.c
     ReactiveFormsModule,
     BrowserAnimationsModule,
     SharedModule,    
-    
+    NgxSpinnerModule,    
   ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+],
   providers: [ 
     {provide: HTTP_INTERCEPTORS, useClass: InterceptorerrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
